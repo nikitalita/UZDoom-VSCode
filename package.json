@@ -979,7 +979,7 @@
                             },
                             "projects": {
                                 "type": "array",
-                                "description": "Either the root folder(s) of the project(s) or a mapping of paths to their corresponding archive names (e.g. [{path: '${workspaceFolder}', archive: 'project.pk3'}, ...])",
+                                "description": "Either the root folder(s) of the project(s) or a mapping of paths to their corresponding archive names (e.g. [{path: '${workspaceFolder}', archive: '${workspaceFolder}/build/project.pk3'}, ...])",
                                 "default": [
                                     "${workspaceFolder}"
                                 ]
@@ -999,7 +999,7 @@
                             },
                             "projects": {
                                 "type": "array",
-                                "description": "Either the root folder(s) of the project(s) or a mapping of paths to their corresponding archive names (e.g. [{path: '${workspaceFolder}', archive: 'project.pk3'}, ...])",
+                                "description": "Either the root folder(s) of the project(s) or a mapping of paths to their corresponding archive names (e.g. [{path: '${workspaceFolder}', archive: '${workspaceFolder}/build/project.pk3'}, ...])",
                                 "default": [
                                     "${workspaceFolder}"
                                 ]
