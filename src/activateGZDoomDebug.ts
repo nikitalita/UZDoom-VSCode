@@ -6,7 +6,7 @@ import { CancellationToken } from 'vscode';
 import { registerGZDoomDebugConfigurationProvider } from './GZDoomDebugConfigProvider';
 import { GZDoomDebugAdapterProxy, GZDoomDebugAdapterProxyOptions } from './GZDoomDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './DebugLauncherService';
-import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path } from './GZDoomGame';
+import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME } from './GZDoomGame';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './VSCodeInterface';
 import { WadFileSystemProvider } from './wad-provider/WadFileSystemProvider';
 import { Pk3FSProvider } from './pk3-provider/Pk3FSProvider';
@@ -20,17 +20,17 @@ let wadFileSystemProvider: WadFileSystemProvider | null = null;
 let pk3FileSystemProvider: Pk3FSProvider | null = null;
 
 export function activateGZDoomDebug(context: vscode.ExtensionContext) {
-	// register a configuration provider for 'gzdoom' debug type
+	// register a configuration provider for game debug type
     registerGZDoomDebugConfigurationProvider(context);
     const factory = new InlineDebugAdapterFactory();
 
-    // register a dynamic configuration provider for 'gzdoom' debug type
+    // register a dynamic configuration provider for game debug type
     wadFileSystemProvider = activateWadProvider(context);
     pk3FileSystemProvider = activatePk3Provider(context);
 	if (!factory) {
 		throw new Error('No debug adapter factory');
 	}
-	context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory('gzdoom', factory));
+	context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory(`${GAME_NAME}`, factory));
 	if ('dispose' in factory && typeof factory.dispose === 'function') {
         // @ts-ignore
 		context.subscriptions.push(factory);
@@ -88,7 +88,7 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
 
             let resolved = false;
             cancellableWindow(
-                `Make sure that gzdoom is running and is either in-game or at the main menu.`,
+                `Make sure that ${GAME_NAME} is running and is either in-game or at the main menu.`,
                 65000,
                 undefined,
                 cancellationToken
@@ -181,7 +181,7 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
 			const cancellationToken = cancellationSource.token;
 			const port = options.port || DEFAULT_PORT;
 			const wait_message = vscode.window.setStatusBarMessage(
-				`Waiting for gzdoom to start...`,
+				`Waiting for ${GAME_NAME} to start...`,
 				30000
 			);
             launched = await debugLauncherService.runLauncher(launchCommand!, port, cancellationToken);
@@ -193,9 +193,9 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
 				_session.configuration.noop = true;
 				return noopExecutable;
 			}
-            let errMessage = `'gzdoom' failed to launch.`;
+            let errMessage = `${GAME_NAME} failed to launch.`;
 			if (launched === DebugLaunchState.multipleGamesRunning) {
-                errMessage = `Multiple gzdoom instances are running, shut them down and try again.`;
+                errMessage = `Multiple ${GAME_NAME} instances are running, shut them down and try again.`;
             }
             throw new Error(errMessage);
         } else { // attach

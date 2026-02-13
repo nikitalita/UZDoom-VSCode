@@ -63,7 +63,7 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
         if (!config.type && !config.request && !config.name) {
             const editor = vscode.window.activeTextEditor;
             if (editor && (editor.document.languageId === 'zscript' || editor.document.languageId === 'acs' || editor?.document.languageId === 'decorate')) {
-                config.type = 'gzdoom';
+                config.type = `${GAME_NAME}`;
                 config.name = 'Attach';
                 config.request = 'attach';
                 config.port = DEFAULT_PORT;
@@ -86,16 +86,16 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
     }
 
     static GZDoomAttachDefaultConfig: DebugConfiguration = {
-        type: 'gzdoom',
-        name: 'gzdoom Attach',
+        type: `${GAME_NAME}`,
+        name: `${GAME_LABEL_NAME}: Attach`,
         request: 'attach',
         port: DEFAULT_PORT,
         projects: ['${workspaceFolder}'],
     };
 
     static GZDoomLaunchDefaultConfig: DebugConfiguration = {
-        type: 'gzdoom',
-        name: 'gzdoom Launch',
+        type: `${GAME_NAME}`,
+        name: `${GAME_LABEL_NAME}: Launch`,
         request: 'launch',
         gamePath: `<PUT_${GAME_NAME.toUpperCase()}_PATH_HERE>`,
         cwd: '${workspaceFolder}',
@@ -163,9 +163,9 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
 
 export function registerGZDoomDebugConfigurationProvider(context: vscode.ExtensionContext) {
     const provider = new gzdoomConfigurationProvider();
-    context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider('gzdoom', provider));
+    context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider(`${GAME_NAME}`, provider));
     // register a command to get the GZDoom binary path
-    context.subscriptions.push(vscode.commands.registerCommand('gzdoom.debug.searchForGamePath', () => {
+    context.subscriptions.push(vscode.commands.registerCommand(`${GAME_NAME}.debug.searchForGamePath`, () => {
         return gzdoomConfigurationProvider.getGamePath();
     }));
 }

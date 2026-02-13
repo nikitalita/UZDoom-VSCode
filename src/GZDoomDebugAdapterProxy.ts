@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-prototype-builtins */
 import { DebugProtocol as DAP, } from '@vscode/debugprotocol';
-import { gzpath as path } from './GZDoomGame';
+import { GAME_LABEL_NAME, GAME_NAME, gzpath as path } from './GZDoomGame';
 import { DAPLogLevel, DebugAdapterProxy, DebugAdapterProxyOptions } from './DebugAdapterProxy';
 import { Response, Message } from '@vscode/debugadapter/lib/messages';
 import * as chalk_d from 'chalk';
@@ -314,7 +314,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
             process.env.USERPROFILE || process.env.HOME || '.',
             'Documents',
             'My Games',
-            'GZDoom',
+            `${GAME_LABEL_NAME}`,
             'Logs',
             'DAProxy'
         );
@@ -329,7 +329,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
         this.projects = options.projects;
         this.scanProjectDirectoryForFiles(this.projects);
         // get the base name of the project archive
-        this.clientCaps.adapterID = 'gzdoom';
+        this.clientCaps.adapterID = `${GAME_NAME}`;
         this.logClientToProxy = 'info';
         this.logProxyToServer = 'trace';
         this.logServerToProxyReal = 'info';
