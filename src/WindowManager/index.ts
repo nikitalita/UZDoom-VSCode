@@ -5,6 +5,13 @@ import { EmptyMonitor } from "./classes/empty-monitor"
 import bindings from "bindings"
 
 
+function getTryEntry(dirname: string, module_root: string) {
+    const path = require("path")
+    let relativePath = path.relative(module_root, dirname)
+    let parts = relativePath.split(path.sep)
+    return ['module_root', ...parts, 'bindings']
+}
+
 function getOpts() {
     let opts: any = {
         bindings: "addon.node"
@@ -12,9 +19,8 @@ function getOpts() {
     if (typeof process !== "undefined") {
         const path = require("path")
         const fs = require("fs")
-        opts.dirname = __filename
-        opts.module_root = path.dirname(__filename)
-        opts.dirname = opts.module_root
+        opts.dirname = path.dirname(__filename)
+        opts.module_root = opts.dirname
         while (true) {
             // check if package.json exists
             let packageJsonPath = path.resolve(opts.module_root, "package.json")
@@ -27,6 +33,23 @@ function getOpts() {
             }
             opts.module_root = newPath
         }
+        opts.try = [
+            getTryEntry(opts.dirname, opts.module_root),
+            // defaults
+            ['module_root', 'build', 'bindings'],
+            ['module_root', 'build', 'Debug', 'bindings'],
+            ['module_root', 'build', 'Release', 'bindings'],
+            ['module_root', 'out', 'Debug', 'bindings'],
+            ['module_root', 'Debug', 'bindings'],
+            ['module_root', 'out', 'Release', 'bindings'],
+            ['module_root', 'Release', 'bindings'],
+            ['module_root', 'build', 'default', 'bindings'],
+            ['module_root', 'compiled', 'version', 'platform', 'arch', 'bindings'],
+            ['module_root', 'addon-build', 'release', 'install-root', 'bindings'],
+            ['module_root', 'addon-build', 'debug', 'install-root', 'bindings'],
+            ['module_root', 'addon-build', 'default', 'install-root', 'bindings'],
+            ['module_root', 'lib', 'binding', 'nodePreGyp', 'bindings'],
+        ]
     }
     return opts
 }
