@@ -1032,37 +1032,7 @@
                     }
                 },
                 "configurationSnippets": [
-                    {
-                        "label": "GZDoom: Launch",
-                        "description": "Launch current GZDoom project",
-                        "body": {
-                            "type": "gzdoom",
-                            "name": "gzdoom Launch",
-                            "request": "launch",
-                            "gzdoomPath": "C:/Program Files/GZDoom/gzdoom.exe",
-                            "projects": [
-                                "${workspaceFolder}"
-                            ],
-                            "iwad": "doom2.wad",
-                            "configPath": "",
-                            "map": "",
-                            "additionalArgs": [],
-                            "cwd": "${workspaceFolder}"
-                        }
-                    },
-                    {
-                        "label": "GZDoom: Attach",
-                        "description": "Debug the current GZDoom project",
-                        "body": {
-                            "type": "gzdoom",
-                            "name": "gzdoom Attach",
-                            "request": "attach",
-                            "port": 19021,
-                            "projects": [
-                                "${workspaceFolder}"
-                            ]
-                        }
-                    }
+
                 ]
             }
         ],

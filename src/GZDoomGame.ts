@@ -1,13 +1,32 @@
 import path, { FormatInputPathObject } from "path";
-
+import fs from "fs";
 export const DEFAULT_PORT = 19021;
 
+
+const GZDOOM_SEARCH_PATHS = {
+    "win32": [
+        "C:/Program Files/GZDoom/gzdoom.exe",
+        "C:/Program Files (x86)/GZDoom/gzdoom.exe",
+        "C:/Program Files/GZDoom/gzdoom.exe",
+    ],
+    "linux": [
+        "/usr/bin/gzdoom",
+        "/usr/local/bin/gzdoom",
+        "/usr/games/gzdoom",
+    ],
+    "darwin": [
+        "/Applications/GZDoom.app/Contents/MacOS/GZDoom",
+        "/Applications/GZDoom.app/Contents/MacOS/gzdoom",
+        "/Applications/GZDoom.app/Contents/MacOS/GZDoom.app/Contents/MacOS/GZDoom",
+    ],
+}
 
 export interface ProjectItem {
     path: string;
     archive: string;
 }
 export const GAME_NAME = "gzdoom";
+export const GAME_LABEL_NAME = "GZDoom";
 export const WAD_EXTENSIONS = ['wad', 'zip', 'pk3', 'pk7', 'deh', 'bex', "iwad", "pwad", "ipk3", "ipk7"];
 
 export const BUILTIN_PK3_FILES = [
@@ -52,6 +71,17 @@ export function startsWithDriveLetter(p: string) {
     return /^[A-Za-z]:/.test(p);
 }
 
+export function searchForGZDoomBinary(): string | null {
+    // check if process.platform is in GZDOOM_SEARCH_PATHS
+    if (process.platform in GZDOOM_SEARCH_PATHS) {
+        for (let p of GZDOOM_SEARCH_PATHS[process.platform]) {
+            if (fs.existsSync(p)) {
+                return p;
+            }
+        }
+    }
+    return null;
+}
 
 class gzpath_wrapper implements path.PlatformPath {
     /**

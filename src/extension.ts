@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import { activateGZDoomDebug } from './activateGZDoomDebug';
 import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
+import { activateDebugSnippetsProvider } from './snippetsProvider';
 
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
@@ -11,6 +12,7 @@ import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 	activateDehackedFoldingProvider(context);
+    activateDebugSnippetsProvider(context);
 	activateGZDoomDebug(context);
 }
 
