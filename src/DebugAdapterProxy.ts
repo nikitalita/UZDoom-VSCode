@@ -10,8 +10,6 @@ import * as path from 'path';
 import { pino } from 'pino';
 import * as pino_pretty from 'pino-pretty';
 import * as chalk_d from 'chalk';
-// import { default as colorizer } from '../../common/colorizer';
-import { default as split } from 'split2';
 import { Event, Response } from '@vscode/debugadapter/lib/messages'; // avoid pulling in the whole debugadapter
 import * as url from 'url';
 import { default as colorizer } from './colorizer';
@@ -150,6 +148,7 @@ export interface DebugAdapterProxyOptions extends DebugConfiguration {
 
     /**
      * The debugger locale
+     *
      * default:
      * {
      *  linesStartAt1: true,
@@ -192,6 +191,12 @@ const DEFAULT_CLIENT_CAPABILITIES: ClientCapabilities = {
     columnsStartAt1: true,
     pathFormat: 'path',
     supportsVariableType: true,
+    pathsAreURIs: false,
+};
+
+const DEFAULT_DEBUGGER_LOCALE: DebuggerLocale = {
+    linesStartAt1: true,
+    columnsStartAt1: true,
     pathsAreURIs: false,
 };
 
@@ -330,7 +335,6 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
     protected loggerFile: pino.Logger;
     protected loggerConsole: pino.BaseLogger;
     protected logFile: stream.Writable;
-    protected readonly logStream: stream.PassThrough;
     protected clientCaps: ClientCapabilities;
     protected debuggerLocale: DebuggerLocale;
     protected launcherProcess?: ChildProcess
@@ -358,11 +362,7 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
         this.logServerToProxy = options.logServerToProxy || this.logServerToProxy;
         this.logProxyToServer = options.logProxyToServer || this.logProxyToServer;
         this.clientCaps = options.clientCapabilities || DEFAULT_CLIENT_CAPABILITIES;
-        this.debuggerLocale = options.debuggerLocale || {
-            linesStartAt1: true,
-            columnsStartAt1: true,
-            pathsAreURIs: false,
-        };
+        this.debuggerLocale = options.debuggerLocale || DEFAULT_DEBUGGER_LOCALE;
         this.pid = options.pid;
         const homepath = process.env.HOME;
         this.logDirectory = options.logdir || path.join(homepath!, '.DAPProxy');
@@ -377,27 +377,7 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
             ignore: 'pid,hostname',
             destination: this.logFilePath,
         });
-        this.logStream = split((data: any) => {
-            //sink()
-            console.log(data);
-            return;
-            // return data;
-        });
-        // Not using colorized console output, it's best to let the debug console handle the coloring because it can also collapse the output
-        // const ppConsoleOpts = {
-        //     colorize: true,
-        //     colorizeObjects: false,
-        //     customPrettifiers: {
-        //         message: (value: any) => {
-        //             return colorize_message(value);
-        //         },
-        //     },
-        //     ignore: 'pid,hostname',
-        //     destination: this.logStream,
-        // };
-        // const pprinterConsole = pino_pretty.default(ppConsoleOpts);
         this.loggerFile = pino({ level: this.fileLogLevel }, pprinterFile);
-        // this.loggerConsole = pino({ level: this.consoleLogLevel }, pprinterConsole);
         // instance of ConsoleLogger
         this.loggerConsole = new ConsoleLogger();
         this.loggerConsole.level = this.consoleLogLevel;
