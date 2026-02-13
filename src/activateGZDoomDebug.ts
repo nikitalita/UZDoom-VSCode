@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import { WorkspaceFolder, DebugConfiguration, ProviderResult, CancellationToken } from 'vscode';
 import { GZDoomDebugAdapterProxy, GZDoomDebugAdapterProxyOptions } from './GZDoomDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './DebugLauncherService';
-import { BUILTIN_PK3_FILES, DEFAULT_PORT, isBuiltinPK3File, normalizePath, ProjectItem, startsWithDriveLetter, GAME_NAME, PathIsAbsolute, gzpath as path } from './GZDoomGame';
+import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path } from './GZDoomGame';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './VSCodeInterface';
 import { WadFileSystemProvider } from './wad-provider/WadFileSystemProvider';
 import { Pk3FSProvider } from './pk3-provider/Pk3FSProvider';

@@ -34,8 +34,10 @@ export class DebugLauncherService implements IDebugLauncherService {
     // TODO: Move this stuff into the global Context
     private cancellationTokenSource: CancellationTokenSource | undefined;
     public launcherProcess: ChildProcess | undefined;
+    // @ts-ignore
     private gamePID: number | undefined;
     private gameName: string = GAME_NAME;
+    // @ts-ignore
     private errorString: string = '';
     constructor() {
     }
@@ -48,11 +50,11 @@ export class DebugLauncherService implements IDebugLauncherService {
 
     async getGameIsRunning(game_name: string = this.gameName) {
         // check if we're on windows
-        
-        if (game_name.endsWith('.exe')) {
+
+        if (game_name.toLowerCase().endsWith('.exe')) {
             game_name = game_name.slice(0, -4);
         }
-        
+
         const processList = await findProcess('name', game_name, false);
         return processList.length > 0;
     }
@@ -209,7 +211,6 @@ export class DebugLauncherService implements IDebugLauncherService {
      */
     async waitForPort(port: number, connectionTimeout: number = 15000, intervalCallback: () => boolean | Promise<boolean> = () => true, interval: number = 1000) {
         let result = false;
-        const isPromise = intervalCallback instanceof Promise;
         const startTime: number = new Date().getTime();
         while (true) {
             const currentTime = new Date().getTime();
@@ -243,7 +244,6 @@ export class DebugLauncherService implements IDebugLauncherService {
      */
     async waitForGameToStart(connectionTimeout: number = 15000, intervalCallback: () => boolean | Promise<boolean> = () => true) {
         let result = false;
-        const isPromise = intervalCallback instanceof Promise;
         const startTime: number = new Date().getTime();
         while (true) {
             const currentTime = new Date().getTime();

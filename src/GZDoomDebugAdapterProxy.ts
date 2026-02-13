@@ -66,7 +66,9 @@ const colorCodeToHexMap = {
 }
 const TEXTCOLOR_NORMAL = "-";
 const TEXTCOLOR_BOLD = "+";
+// @ts-ignore
 const TEXTCOLOR_CHAT = "*";
+// @ts-ignore
 const TEXTCOLOR_TEAMCHAT = "!";
 
 const chalk: chalk_d.ChalkInstance = chalk_d.default.constructor({ enabled: true, level: 2 });
@@ -77,8 +79,8 @@ function colorize_log_output(value: string) {
     let result = '';
     let currentColor = '#F0FFFF';
     let currentBold = false;
-    let currentChat = false;
-    let currentTeamChat = false;
+    // let currentChat = false;
+    // let currentTeamChat = false;
 
     // Split the string by color codes
     const parts = value.split(TEXTCOLOR_ESCAPE);
@@ -107,14 +109,14 @@ function colorize_log_output(value: string) {
         } else if (colorCode === TEXTCOLOR_BOLD) {
             // Toggle bold
             currentBold = true;
-        } else if (colorCode === TEXTCOLOR_CHAT) {
-            // Toggle chat mode
-            currentChat = true;
-            currentTeamChat = false;
-        } else if (colorCode === TEXTCOLOR_TEAMCHAT) {
-            // Toggle team chat mode
-            currentTeamChat = true;
-            currentChat = false;
+            // } else if (colorCode === TEXTCOLOR_CHAT) {
+            //     // Toggle chat mode
+            //     currentChat = true;
+            //     currentTeamChat = false;
+            // } else if (colorCode === TEXTCOLOR_TEAMCHAT) {
+            //     // Toggle team chat mode
+            //     currentTeamChat = true;
+            //     currentChat = false;
         }
         var new_str = chalk.hex(currentColor)(part.slice(1));
         if (currentBold) {
@@ -195,6 +197,7 @@ class CustomSet<T> implements Set<T> {
     }
 }
 
+// @ts-ignore
 class ICaseSet extends CustomSet<string> {
     constructor(iterable?: Iterable<string>) {
         super((a, b) => a.toLowerCase() === b.toLowerCase(), iterable);
@@ -292,7 +295,6 @@ interface SourceItem {
 export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
 
     private _pendingRequestsMap = new Map<number, pendingRequest>();
-    private projectPaths: ProjectItem[] = [];
     private onFinishedScanning: Emitter<number | null> = new Emitter<number | null>();
     private done_scanning_project = false;
     private launch_request_sent = false;
@@ -302,6 +304,8 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
     private logServerToProxyReal: DAPLogLevel = 'info';
     private workspaceFileAccessor: FileAccessor;
     private projects: ProjectItem[];
+    // TODO: Use this eventually
+    // @ts-ignore
     private loadedModules: DAP.Module[] = [];
 
     // object name to source map

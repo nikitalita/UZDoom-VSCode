@@ -16,7 +16,7 @@ import { Event, Response } from '@vscode/debugadapter/lib/messages'; // avoid pu
 import * as url from 'url';
 import { default as colorizer } from './colorizer';
 import { ChildProcess } from 'child_process';
-import { DestinationStream, BaseLogger, LogFn } from 'pino';
+import { DestinationStream, BaseLogger } from 'pino';
 import { Disposable0, Emitter, Event0 } from './IDEInterface';
 // import { DebugConfiguration } from 'vscode';
 export interface DebugConfiguration {
@@ -235,30 +235,6 @@ function colorizeMessage(is_error: boolean, message?: string) {
     }
     return chalk.hex('#CE9178')(message);
 }
-class NoOpStream implements DestinationStream {
-    public write(msg: string) { }
-    public log(level: string, obj: any, msg?: string, ...args: any[]) { }
-}
-class NoOpLogger implements BaseLogger {
-    private cstream: ConsoleStream = new NoOpStream();
-    constructor() {
-    }
-    public level = 'silent';
-    public fatal(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public error(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public warn(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public info(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public debug(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public trace(obj: any, msg?: string, ...args: any[]): void {
-    }
-    public silent(obj: any, msg?: string, ...args: any[]): void {
-    }
-}
 
 class ConsoleLogger implements BaseLogger {
     private cstream: ConsoleStream = new ConsoleStream();
@@ -407,18 +383,19 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
             return;
             // return data;
         });
-        const ppConsoleOpts = {
-            colorize: true,
-            colorizeObjects: false,
-            customPrettifiers: {
-                message: (value: any) => {
-                    return colorize_message(value);
-                },
-            },
-            ignore: 'pid,hostname',
-            destination: this.logStream,
-        };
-        const pprinterConsole = pino_pretty.default(ppConsoleOpts);
+        // Not using colorized console output, it's best to let the debug console handle the coloring because it can also collapse the output
+        // const ppConsoleOpts = {
+        //     colorize: true,
+        //     colorizeObjects: false,
+        //     customPrettifiers: {
+        //         message: (value: any) => {
+        //             return colorize_message(value);
+        //         },
+        //     },
+        //     ignore: 'pid,hostname',
+        //     destination: this.logStream,
+        // };
+        // const pprinterConsole = pino_pretty.default(ppConsoleOpts);
         this.loggerFile = pino({ level: this.fileLogLevel }, pprinterFile);
         // this.loggerConsole = pino({ level: this.consoleLogLevel }, pprinterConsole);
         // instance of ConsoleLogger
@@ -603,7 +580,6 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
     protected sendMessageToClient(message: DAP.ProtocolMessage, noLog: boolean = false): void {
 
         if (!noLog) {
-            let type = message.type;
             let obj: any = this.getLogObj(message);
 
             if (message.type === 'response' && !(message as DAP.Response).success) {

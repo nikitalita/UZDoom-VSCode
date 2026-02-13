@@ -1,5 +1,4 @@
 import * as fs from 'fs/promises';
-import * as path from 'path';
 import { FileAccessor, FileType } from './IDEInterface';
 import { glob as _glob } from 'glob';
 import { promisify } from 'util';

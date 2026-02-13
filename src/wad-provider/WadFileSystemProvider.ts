@@ -1,9 +1,9 @@
 import { Emitter } from "../IDEInterface"
-import { FileSystemProvider, FileStat, FileType, CancellationToken, EventEmitter, Event, FileChangeEvent, Disposable, Uri } from 'vscode';
+import { FileSystemProvider, FileStat, FileType, Event, FileChangeEvent, Disposable, Uri } from 'vscode';
 import Wad from "../doom-wad/Wad";
 import * as fs from 'fs/promises';
 import Lump from "../doom-wad/Lumps/Lump";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync } from "fs";
 import * as path from "path";
 
 const EXTENSIONS = ['.wad', '.iwad'];

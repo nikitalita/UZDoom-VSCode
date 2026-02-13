@@ -3,6 +3,7 @@
 //  *  Licensed under the MIT License. See License.txt in the project root for license information.
 //  *--------------------------------------------------------------------------------------------*/
 
+// TODO: This is intended to be used as a standalone debug proxy process for IDEs that don't support the DAP protocol inline, but we're not currently using it
 // import * as Net from 'net';
 
 // import { GZDoomDebugAdapterProxy } from './GZDoomDebugAdapterProxy';
