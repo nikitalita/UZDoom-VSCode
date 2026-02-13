@@ -262,7 +262,7 @@ export class DebugLauncherService implements IDebugLauncherService {
 
 
     public getLaunchCommand(
-        gzdoomPath: string,
+        gamePath: string,
         iwad: string,
         pwads: string[],
         debugPort: number,
@@ -290,7 +290,7 @@ export class DebugLauncherService implements IDebugLauncherService {
             args.push(...gzdoomArgs);
         }
         return {
-            command: gzdoomPath,
+            command: gamePath,
             args: args,
             cwd: cwd,
         };

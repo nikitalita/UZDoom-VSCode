@@ -159,7 +159,7 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
                     options.cwd = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
                 }
                 launchCommand = debugLauncherService.getLaunchCommand(
-                    options.gzdoomPath,
+                    options.gamePath,
                     options.iwad,
                     options.projects.map(p => p.archive),
                     options.port,

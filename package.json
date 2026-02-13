@@ -988,7 +988,7 @@
                     },
                     "launch": {
                         "properties": {
-                            "gzdoomPath": {
+                            "gamePath": {
                                 "type": "string",
                                 "description": "Path to the GZDoom executable"
                             },
@@ -1027,6 +1027,12 @@
                                 "type": "string",
                                 "description": "Working directory to use",
                                 "default": "${workspaceFolder}"
+                            },
+                            "gzdoomPath": {
+                                "deprecated": true,
+                                "type": "string",
+                                "markdownDeprecationMessage": "**Deprecated**: Please use `#gamePath#` instead.",
+                                "deprecationMessage": "Deprecated: Please use gamePath instead."
                             }
                         }
                     }

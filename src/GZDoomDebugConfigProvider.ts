@@ -43,12 +43,23 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
         }
         return new_projects;
     }
+
+    fixDeprecatedParams(config: DebugConfiguration): DebugConfiguration {
+        if (config.request === 'launch' && !config.gamePath && config.gzdoomPath) {
+            config.gamePath = config.gzdoomPath;
+            delete config.gzdoomPath;
+        }
+        return config;
+    }
+
     /**
      * Massage a debug configuration just before a debug session is being launched,
      * e.g. add all missing attributes to the debug configuration.
      */
     async resolveDebugConfiguration(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): Promise<DebugConfiguration> {
         // if launch.json is missing or empty
+        // backwards compatibility with old config format
+        config = this.fixDeprecatedParams(config);
         if (!config.type && !config.request && !config.name) {
             const editor = vscode.window.activeTextEditor;
             if (editor && (editor.document.languageId === 'zscript' || editor.document.languageId === 'acs' || editor?.document.languageId === 'decorate')) {
@@ -69,6 +80,7 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
 
     // called directly after resolveDebugConfiguration
     async resolveDebugConfigurationWithSubstitutedVariables(folder: WorkspaceFolder | undefined, config: DebugConfiguration, token?: CancellationToken): Promise<DebugConfiguration> {
+        config = this.fixDeprecatedParams(config);
         config.projects = await this.fixProjects(config.projects, folder?.uri.fsPath);
         return config;
     }
@@ -85,7 +97,7 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
         type: 'gzdoom',
         name: 'gzdoom Launch',
         request: 'launch',
-        gzdoomPath: `<PUT_${GAME_NAME.toUpperCase()}_PATH_HERE>`,
+        gamePath: `<PUT_${GAME_NAME.toUpperCase()}_PATH_HERE>`,
         cwd: '${workspaceFolder}',
         port: DEFAULT_PORT,
         projects: ['${workspaceFolder}'],
@@ -115,12 +127,12 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
     }
 
     static getDefaultConfigs(): DebugConfiguration[] {
-        const gzdoomPath = gzdoomConfigurationProvider.getGamePath();
+        const gamePath = gzdoomConfigurationProvider.getGamePath();
         let configs: DebugConfiguration[] = gzdoomConfigurationProvider.defaultConfigs;
-        if (gzdoomPath) {
+        if (gamePath) {
             for (let config of configs) {
-                if (config.gzdoomPath) {
-                    config.gzdoomPath = gzdoomPath;
+                if (config.gamePath) {
+                    config.gamePath = gamePath;
                 }
             }
         }
