@@ -2,7 +2,7 @@ import Tokenizr from "tokenizr";
 import Lump from "./Lump";
 import ParseTextmapError from "../Exceptions/ParseTextmapError";
 
-// NB: See https://github.com/ZDoom/gzdoom/blob/master/specs/udmf.txt
+// NB: See https://github.com/UZDoom/uzdoom/blob/master/specs/udmf.txt
 
 type BooleanToken = {
 	type: "boolean";

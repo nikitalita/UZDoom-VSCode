@@ -1,9 +1,9 @@
 {
-    "name": "gzdoom-zscript",
-    "displayName": "GZDoom ZScript",
-    "description": "GZDoom's multiple scripting languages support (with a focus on ZScript) for VSCode (and compatible editors)",
+    "name": "uzdoom-zscript",
+    "displayName": "UZDoom ZScript",
+    "description": "UZDoom's multiple scripting languages support (with a focus on ZScript) for VSCode (and compatible editors)",
     "publisher": "kaptainmicila",
-    "icon": "icons/GZDoom.png",
+    "icon": "icons/UZDoom.png",
     "version": "1.10.0-beta.2",
     "scripts": {
         "compile": "tsc -p ./",
@@ -82,8 +82,8 @@
         "onFileSystem:pk3",
         "onLanguage:wad",
         "onFileSystem:wad",
-        "onDebugResolve:gzdoom",
-        "onDebugDynamicConfigurations:gzdoom",
+        "onDebugResolve:uzdoom",
+        "onDebugDynamicConfigurations:uzdoom",
         "onLanguage:zscript",
         "onLanguage:acs",
         "onLanguage:decorate",
@@ -149,7 +149,7 @@
                     "DECORATE",
                     "decorate",
                     "zdoomDecorate",
-                    "gzdoomDecorate"
+                    "uzdoomDecorate"
                 ],
                 "extensions": [
                     ".dec"
@@ -961,13 +961,13 @@
         ],
         "debuggers": [
             {
-                "type": "gzdoom",
+                "type": "uzdoom",
                 "languages": [
                     "zscript",
                     "decorate",
                     "dehacked"
                 ],
-                "label": "GZDoom",
+                "label": "UZDoom",
                 "runtime": "node",
                 "configurationAttributes": {
                     "attach": {
@@ -990,7 +990,7 @@
                         "properties": {
                             "gamePath": {
                                 "type": "string",
-                                "description": "Path to the GZDoom executable"
+                                "description": "Path to the UZDoom executable"
                             },
                             "port": {
                                 "type": "number",
@@ -1020,7 +1020,7 @@
                             },
                             "additionalArgs": {
                                 "type": "array",
-                                "description": "Additional arguments to pass to GZDoom",
+                                "description": "Additional arguments to pass to UZDoom",
                                 "default": []
                             },
                             "cwd": {
@@ -1140,6 +1140,7 @@
         "zscript",
         "acs",
         "zdoom",
-        "gzdoom"
+        "gzdoom",
+        "uzdoom"
     ]
 }

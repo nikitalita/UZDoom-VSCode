@@ -1,4 +1,4 @@
-<p align="center"><img width="256" height="256" src="./icons/GZDoom.png" alt="GZDoom logo" style="min-width: 128px; max-width: 128px; min-height: 128px; max-height: 128px;"></p>
+<p align="center"><img width="256" height="256" src="./icons/UZDoom.png" alt="UZDoom logo" style="min-width: 128px; max-width: 128px; min-height: 128px; max-height: 128px;"></p>
 <h1 align="center">ZScript-VSCode</h1>
 
 <p align="center">
@@ -8,24 +8,24 @@
 
 ---
 
-## [GZDoom's](https://zdoom.org/index) [ZScript](https://zdoom.org/wiki/ZScript) language support for [VSCode](https://code.visualstudio.com/) (and compatible editors).
+## [UZDoom's](https://zdoom.org/index) [ZScript](https://zdoom.org/wiki/ZScript) language support for [VSCode](https://code.visualstudio.com/) (and compatible editors).
 
 Made with the help from:
 
 - [marrub--'s ZScript documentation](https://github.com/marrub--/zdoom-doc).
-- Every single other GZDoom modder
+- Every single other UZDoom modder
 
 ---
 
 ## FEATURES
 
-- Syntax highlighting for many languages needed for GZDoom modding
+- Syntax highlighting for many languages needed for UZDoom modding
 
 ---
 
 ## IMAGES
 
-archvile.zs (from gzdoom.pk3)
+archvile.zs (from uzdoom.pk3)
 
 ![archvile.zs](https://raw.githubusercontent.com/KaptainMicila/ZScript-VSCode/master/icons/CodeScreenshot.png)
 
@@ -51,11 +51,11 @@ Just do the same thing for earlier versions
 
 OR:
 
-Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=kaptainmicila.gzdoom-zscript)
+Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=kaptainmicila.uzdoom-zscript)
 
 OR:
 
-Get it from [Open VSX Registry](https://open-vsx.org/extension/kaptainmicila/gzdoom-zscript)
+Get it from [Open VSX Registry](https://open-vsx.org/extension/kaptainmicila/uzdoom-zscript)
 
 ---
 

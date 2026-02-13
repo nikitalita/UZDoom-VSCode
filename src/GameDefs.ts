@@ -5,19 +5,19 @@ export const DEFAULT_PORT = 19021;
 
 const GAME_SEARCH_PATHS = {
     "win32": [
-        "C:/Program Files/GZDoom/gzdoom.exe",
-        "C:/Program Files (x86)/GZDoom/gzdoom.exe",
-        "C:/Program Files/GZDoom/gzdoom.exe",
+        "C:/Program Files/UZDoom/uzdoom.exe",
+        "C:/Program Files (x86)/UZDoom/uzdoom.exe",
+        "C:/Program Files/UZDoom/uzdoom.exe",
     ],
     "linux": [
-        "/usr/bin/gzdoom",
-        "/usr/local/bin/gzdoom",
-        "/usr/games/gzdoom",
+        "/usr/bin/uzdoom",
+        "/usr/local/bin/uzdoom",
+        "/usr/games/uzdoom",
     ],
     "darwin": [
-        "/Applications/GZDoom.app/Contents/MacOS/GZDoom",
-        "/Applications/GZDoom.app/Contents/MacOS/gzdoom",
-        "/Applications/GZDoom.app/Contents/MacOS/GZDoom.app/Contents/MacOS/GZDoom",
+        "/Applications/UZDoom.app/Contents/MacOS/UZDoom",
+        "/Applications/UZDoom.app/Contents/MacOS/uzdoom",
+        "/Applications/UZDoom.app/Contents/MacOS/UZDoom.app/Contents/MacOS/UZDoom",
     ],
 }
 
@@ -25,12 +25,12 @@ export interface ProjectItem {
     path: string;
     archive: string;
 }
-export const GAME_NAME = "gzdoom";
-export const GAME_LABEL_NAME = "GZDoom";
+export const GAME_NAME = "uzdoom";
+export const GAME_LABEL_NAME = "UZDoom";
 export const WAD_EXTENSIONS = ['wad', 'zip', 'pk3', 'pk7', 'deh', 'bex', "iwad", "pwad", "ipk3", "ipk7"];
 
 export const BUILTIN_PK3_FILES = [
-    "gzdoom.pk3",
+    "uzdoom.pk3",
     "brightmaps.pk3",
     "lights.pk3",
     "game_support.pk3",
