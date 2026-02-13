@@ -3,10 +3,10 @@
 
 import * as vscode from 'vscode';
 import { CancellationToken } from 'vscode';
-import { registerGZDoomDebugConfigurationProvider } from './GZDoomDebugConfigProvider';
-import { GZDoomDebugAdapterProxy, GZDoomDebugAdapterProxyOptions } from './GZDoomDebugAdapterProxy';
+import { registerGameDebugConfigurationProvider } from './GameDebugConfigProvider';
+import { GameDebugAdapterProxy, GameDebugAdapterProxyOptions } from './GameDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './DebugLauncherService';
-import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME } from './GZDoomGame';
+import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME } from './GameDefs';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './VSCodeInterface';
 import { WadFileSystemProvider } from './wad-provider/WadFileSystemProvider';
 import { Pk3FSProvider } from './pk3-provider/Pk3FSProvider';
@@ -19,22 +19,22 @@ const workspaceFileAccessor = new WorkspaceFileAccessor();
 let wadFileSystemProvider: WadFileSystemProvider | null = null;
 let pk3FileSystemProvider: Pk3FSProvider | null = null;
 
-export function activateGZDoomDebug(context: vscode.ExtensionContext) {
-	// register a configuration provider for game debug type
-    registerGZDoomDebugConfigurationProvider(context);
+export function activateGameDebug(context: vscode.ExtensionContext) {
+    // register a configuration provider for game debug type
+    registerGameDebugConfigurationProvider(context);
     const factory = new InlineDebugAdapterFactory();
 
     // register a dynamic configuration provider for game debug type
     wadFileSystemProvider = activateWadProvider(context);
     pk3FileSystemProvider = activatePk3Provider(context);
-	if (!factory) {
-		throw new Error('No debug adapter factory');
-	}
-	context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory(`${GAME_NAME}`, factory));
-	if ('dispose' in factory && typeof factory.dispose === 'function') {
+    if (!factory) {
+        throw new Error('No debug adapter factory');
+    }
+    context.subscriptions.push(vscode.debug.registerDebugAdapterDescriptorFactory(`${GAME_NAME}`, factory));
+    if ('dispose' in factory && typeof factory.dispose === 'function') {
         // @ts-ignore
-		context.subscriptions.push(factory);
-	}
+        context.subscriptions.push(factory);
+    }
 
 }
 
@@ -134,19 +134,19 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
         }
     }
 
-	async createDebugAdapterDescriptor(_session: vscode.DebugSession): Promise<vscode.DebugAdapterDescriptor> {
+    async createDebugAdapterDescriptor(_session: vscode.DebugSession): Promise<vscode.DebugAdapterDescriptor> {
         // macos requires accessibility permission for re-focusing the window after execution resumes
         // no need to check for platform, windowManager.requestAccessibility() is a no-op on non-macos
         windowManager.requestAccessibility();
 
-        let options = _session.configuration as GZDoomDebugAdapterProxyOptions;
+        let options = _session.configuration as GameDebugAdapterProxyOptions;
         if (!_session.configuration.projects) {
             if (!_session.workspaceFolder) {
                 throw new Error('No project path provided.');
             }
         }
         options.consoleLogLevel = 'debug';
-		let launched: DebugLaunchState = DebugLaunchState.success;
+        let launched: DebugLaunchState = DebugLaunchState.success;
         let launchCommand: LaunchCommand | undefined = undefined;
         let reattach = false;
         let pid = 0;
@@ -177,24 +177,24 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
         let shouldLaunch = options.request === 'launch' || reattach;
         if (shouldLaunch) {
             await this.resolveProjects(options.projects);
-			const cancellationSource = new vscode.CancellationTokenSource();
-			const cancellationToken = cancellationSource.token;
-			const port = options.port || DEFAULT_PORT;
-			const wait_message = vscode.window.setStatusBarMessage(
-				`Waiting for ${GAME_NAME} to start...`,
-				30000
-			);
+            const cancellationSource = new vscode.CancellationTokenSource();
+            const cancellationToken = cancellationSource.token;
+            const port = options.port || DEFAULT_PORT;
+            const wait_message = vscode.window.setStatusBarMessage(
+                `Waiting for ${GAME_NAME} to start...`,
+                30000
+            );
             launched = await debugLauncherService.runLauncher(launchCommand!, port, cancellationToken);
-			wait_message.dispose();
+            wait_message.dispose();
             pid = debugLauncherService.launcherProcess?.pid || 0;
-		}
-		if (launched != DebugLaunchState.success) {
-			if (launched === DebugLaunchState.cancelled) {
-				_session.configuration.noop = true;
-				return noopExecutable;
-			}
+        }
+        if (launched != DebugLaunchState.success) {
+            if (launched === DebugLaunchState.cancelled) {
+                _session.configuration.noop = true;
+                return noopExecutable;
+            }
             let errMessage = `${GAME_NAME} failed to launch.`;
-			if (launched === DebugLaunchState.multipleGamesRunning) {
+            if (launched === DebugLaunchState.multipleGamesRunning) {
                 errMessage = `Multiple ${GAME_NAME} instances are running, shut them down and try again.`;
             }
             throw new Error(errMessage);
@@ -214,16 +214,16 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
                 }
             }
         }
-		var config = options as GZDoomDebugAdapterProxyOptions;
-		config.launcherProcess = debugLauncherService.launcherProcess;
+        var config = options as GameDebugAdapterProxyOptions;
+        config.launcherProcess = debugLauncherService.launcherProcess;
         config.pid = pid;
 
 
         config.startNow = false;
-        let proxy = new GZDoomDebugAdapterProxy(workspaceFileAccessor, config);
+        let proxy = new GameDebugAdapterProxy(workspaceFileAccessor, config);
         proxy.start();
-		return new vscode.DebugAdapterInlineImplementation(
+        return new vscode.DebugAdapterInlineImplementation(
             proxy
-		);
-	}
+        );
+    }
 }

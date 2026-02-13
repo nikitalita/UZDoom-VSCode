@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { activateGZDoomDebug } from './activateGZDoomDebug';
+import { activateGameDebug } from './activateDebug';
 import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
 import { activateDebugSnippetsProvider } from './snippetsProvider';
 
@@ -13,7 +13,7 @@ import { activateDebugSnippetsProvider } from './snippetsProvider';
 export function activate(context: vscode.ExtensionContext) {
 	activateDehackedFoldingProvider(context);
     activateDebugSnippetsProvider(context);
-	activateGZDoomDebug(context);
+    activateGameDebug(context);
 }
 
 export function deactivate() {

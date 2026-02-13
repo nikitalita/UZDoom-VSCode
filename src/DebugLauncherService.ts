@@ -4,7 +4,7 @@ import waitPort from 'wait-port';
 import findProcess from 'find-process';
 import { lsof, ProcessInfo } from 'list-open-files';
 import path from 'path';
-import { GAME_NAME } from './GZDoomGame';
+import { GAME_NAME } from './GameDefs';
 
 export enum DebugLaunchState {
     success,
@@ -78,7 +78,7 @@ export class DebugLauncherService implements IDebugLauncherService {
         }
         let process = await findProcess('port', port, false);
         if (process.length === 0) {
-            // just look for "gzdoom"
+            // just look for the game name
             process = await findProcess('name', game_name, false);
             if (process.length === 0) {
                 return undefined;
@@ -267,8 +267,8 @@ export class DebugLauncherService implements IDebugLauncherService {
         pwads: string[],
         debugPort: number,
         map?: string,
-        gzdoomIniPath?: string,
-        gzdoomArgs?: string[],
+        gameIniPath?: string,
+        gameArgs?: string[],
         cwd?: string,
     ): LaunchCommand {
         let args = [
@@ -280,14 +280,14 @@ export class DebugLauncherService implements IDebugLauncherService {
         for (const pwad of pwads) {
             args.push('-file', pwad);
         }
-        if (gzdoomIniPath) {
-            args.push('-config', gzdoomIniPath);
+        if (gameIniPath) {
+            args.push('-config', gameIniPath);
         }
         if (map) {
             args.push('+map', map);
         }
-        if (gzdoomArgs) {
-            args.push(...gzdoomArgs);
+        if (gameArgs) {
+            args.push(...gameArgs);
         }
         return {
             command: gamePath,

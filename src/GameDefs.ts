@@ -3,7 +3,7 @@ import fs from "fs";
 export const DEFAULT_PORT = 19021;
 
 
-const GZDOOM_SEARCH_PATHS = {
+const GAME_SEARCH_PATHS = {
     "win32": [
         "C:/Program Files/GZDoom/gzdoom.exe",
         "C:/Program Files (x86)/GZDoom/gzdoom.exe",
@@ -71,10 +71,9 @@ export function startsWithDriveLetter(p: string) {
     return /^[A-Za-z]:/.test(p);
 }
 
-export function searchForGZDoomBinary(): string | null {
-    // check if process.platform is in GZDOOM_SEARCH_PATHS
-    if (process.platform in GZDOOM_SEARCH_PATHS) {
-        for (let p of GZDOOM_SEARCH_PATHS[process.platform]) {
+export function searchForGameBinary(): string | null {
+    if (process.platform in GAME_SEARCH_PATHS) {
+        for (let p of GAME_SEARCH_PATHS[process.platform]) {
             if (fs.existsSync(p)) {
                 return p;
             }

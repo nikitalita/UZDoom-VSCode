@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-prototype-builtins */
 import { DebugProtocol as DAP, } from '@vscode/debugprotocol';
-import { GAME_LABEL_NAME, GAME_NAME, gzpath as path } from './GZDoomGame';
+import { GAME_LABEL_NAME, GAME_NAME, gzpath as path } from './GameDefs';
 import { DAPLogLevel, DebugAdapterProxy, DebugAdapterProxyOptions } from './DebugAdapterProxy';
 import { Response, Message } from '@vscode/debugadapter/lib/messages';
 import * as chalk_d from 'chalk';
 import { FileAccessor, Emitter } from './IDEInterface';
-import { ProjectItem } from './GZDoomGame';
+import { ProjectItem } from './GameDefs';
 import { Window, windowManager } from "./WindowManager"
 
 export enum ErrorDestination {
@@ -14,7 +14,7 @@ export enum ErrorDestination {
     Telemetry = 2,
 }
 
-export interface GZDoomDebugAdapterProxyOptions extends DebugAdapterProxyOptions {
+export interface GameDebugAdapterProxyOptions extends DebugAdapterProxyOptions {
     // array of projectItems or a single string
     projects: Array<ProjectItem>;
 }
@@ -27,7 +27,7 @@ interface pendingRequest {
     noLogResponse: boolean;
 }
 
-const GZDOOM_DAP_LOCALE = {
+const GAME_DAP_LOCALE = {
     linesStartAt1: true,
     columnsStartAt1: true,
     pathsAreURIs: false,
@@ -292,7 +292,7 @@ interface SourceItem {
     origin: ProjectItem;
 }
 
-export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
+export class GameDebugAdapterProxy extends DebugAdapterProxy {
 
     private _pendingRequestsMap = new Map<number, pendingRequest>();
     private onFinishedScanning: Emitter<number | null> = new Emitter<number | null>();
@@ -309,7 +309,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
     private loadedModules: DAP.Module[] = [];
 
     // object name to source map
-    constructor(fileAccessor: FileAccessor, options: GZDoomDebugAdapterProxyOptions) {
+    constructor(fileAccessor: FileAccessor, options: GameDebugAdapterProxyOptions) {
         const logdir = path.join(
             process.env.USERPROFILE || process.env.HOME || '.',
             'Documents',
@@ -320,7 +320,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
         );
 
         options.logdir = options.logdir || logdir;
-        options.debuggerLocale = GZDOOM_DAP_LOCALE;
+        options.debuggerLocale = GAME_DAP_LOCALE;
         super(options);
         if (!options.projects) {
             throw new Error('projectPath is required');
@@ -355,7 +355,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
         window.bringToTop();
     }
 
-    processProjectItems(options: GZDoomDebugAdapterProxyOptions) {
+    processProjectItems(options: GameDebugAdapterProxyOptions) {
     }
 
     clearExecutionState() {
@@ -696,7 +696,7 @@ export class GZDoomDebugAdapterProxy extends DebugAdapterProxy {
     }
 
     // We shouldn't get these; if we do, we screwed up somewhere.'
-    // In either case, gzdoom doesn't respond to them
+    // In either case, the game doesn't respond to them
     protected handleSourceRequest(request: DAP.SourceRequest): void {
         if (request.arguments.source) {
             request.arguments.source = this.convertClientSourceToDebugger(request.arguments.source as DAP.Source);

@@ -6,9 +6,9 @@
 // TODO: This is intended to be used as a standalone debug proxy process for IDEs that don't support the DAP protocol inline, but we're not currently using it
 // import * as Net from 'net';
 
-// import { GZDoomDebugAdapterProxy } from './GZDoomDebugAdapterProxy';
+// import { GameDebugAdapterProxy } from './GameDebugAdapterProxy';
 // // import a cli parser
-// export function runDebugAdapter(debugSession: typeof GZDoomDebugAdapterProxy) {
+// export function runDebugAdapter(debugSession: typeof GameDebugAdapterProxy) {
 
 //     // parse arguments
 //     let port = 0;

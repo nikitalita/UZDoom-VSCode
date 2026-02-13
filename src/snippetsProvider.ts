@@ -1,8 +1,8 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { DEFAULT_PORT } from './GZDoomGame';
-import { gzdoomConfigurationProvider } from './GZDoomDebugConfigProvider';
+import { DEFAULT_PORT } from './GameDefs';
+import { GameConfigurationProvider } from './GameDebugConfigProvider';
 
 const LAUNCH_JSON_PATH = '.vscode/launch.json';
 
@@ -35,7 +35,7 @@ export function activateDebugSnippetsProvider(context: vscode.ExtensionContext):
 
             const items: vscode.CompletionItem[] = [];
 
-            const descriptors = gzdoomConfigurationProvider.getDefaultConfigurationDescriptors();
+            const descriptors = GameConfigurationProvider.getDefaultConfigurationDescriptors();
             for (let descriptor of descriptors) {
                 const item = new vscode.CompletionItem(descriptor.label, vscode.CompletionItemKind.Module);
                 item.detail = descriptor.description;

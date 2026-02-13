@@ -1,4 +1,4 @@
-import { DEFAULT_PORT, GAME_LABEL_NAME, GAME_NAME, isBuiltinPK3File, ProjectItem, searchForGZDoomBinary as searchForGameBinary } from "./GZDoomGame";
+import { DEFAULT_PORT, GAME_LABEL_NAME, GAME_NAME, isBuiltinPK3File, ProjectItem, searchForGameBinary } from "./GameDefs";
 import * as vscode from 'vscode';
 import path from "path";
 import { WorkspaceFolder, DebugConfiguration, ProviderResult, CancellationToken } from 'vscode';
@@ -12,7 +12,7 @@ export interface ConfigurationDescriptor {
     body: DebugConfiguration;
 }
 
-export class gzdoomConfigurationProvider implements vscode.DebugConfigurationProvider {
+export class GameConfigurationProvider implements vscode.DebugConfigurationProvider {
     async fixProjects(projects, workspaceFolder: string | undefined): Promise<ProjectItem[]> {
         let new_projects: ProjectItem[] = [];
         for (let project of projects) {
@@ -85,7 +85,7 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
         return config;
     }
 
-    static GZDoomAttachDefaultConfig: DebugConfiguration = {
+    static GameAttachDefaultConfig: DebugConfiguration = {
         type: `${GAME_NAME}`,
         name: `${GAME_LABEL_NAME}: Attach`,
         request: 'attach',
@@ -93,7 +93,7 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
         projects: ['${workspaceFolder}'],
     };
 
-    static GZDoomLaunchDefaultConfig: DebugConfiguration = {
+    static GameLaunchDefaultConfig: DebugConfiguration = {
         type: `${GAME_NAME}`,
         name: `${GAME_LABEL_NAME}: Launch`,
         request: 'launch',
@@ -108,8 +108,8 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
     };
 
     static defaultConfigs: DebugConfiguration[] = [
-        gzdoomConfigurationProvider.GZDoomAttachDefaultConfig,
-        gzdoomConfigurationProvider.GZDoomLaunchDefaultConfig,
+        GameConfigurationProvider.GameAttachDefaultConfig,
+        GameConfigurationProvider.GameLaunchDefaultConfig,
     ];
 
     static defaultLabels: string[] = [
@@ -127,8 +127,8 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
     }
 
     static getDefaultConfigs(): DebugConfiguration[] {
-        const gamePath = gzdoomConfigurationProvider.getGamePath();
-        let configs: DebugConfiguration[] = gzdoomConfigurationProvider.defaultConfigs;
+        const gamePath = GameConfigurationProvider.getGamePath();
+        let configs: DebugConfiguration[] = GameConfigurationProvider.defaultConfigs;
         if (gamePath) {
             for (let config of configs) {
                 if (config.gamePath) {
@@ -140,12 +140,12 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
     }
 
     static getDefaultConfigurationDescriptors(): ConfigurationDescriptor[] {
-        const configs = gzdoomConfigurationProvider.getDefaultConfigs();
+        const configs = GameConfigurationProvider.getDefaultConfigs();
         const descriptors: ConfigurationDescriptor[] = [];
         for (let i = 0; i < configs.length; i++) {
             const descriptor: ConfigurationDescriptor = {
-                "label": gzdoomConfigurationProvider.defaultLabels[i],
-                "description": gzdoomConfigurationProvider.defaultDescriptions[i],
+                "label": GameConfigurationProvider.defaultLabels[i],
+                "description": GameConfigurationProvider.defaultDescriptions[i],
                 "body": configs[i],
             }
             descriptors.push(descriptor);
@@ -155,17 +155,17 @@ export class gzdoomConfigurationProvider implements vscode.DebugConfigurationPro
 
 
     provideDebugConfigurations(folder: WorkspaceFolder | undefined): ProviderResult<DebugConfiguration[]> {
-        return gzdoomConfigurationProvider.getDefaultConfigs();
+        return GameConfigurationProvider.getDefaultConfigs();
     }
 
 }
 
 
-export function registerGZDoomDebugConfigurationProvider(context: vscode.ExtensionContext) {
-    const provider = new gzdoomConfigurationProvider();
+export function registerGameDebugConfigurationProvider(context: vscode.ExtensionContext) {
+    const provider = new GameConfigurationProvider();
     context.subscriptions.push(vscode.debug.registerDebugConfigurationProvider(`${GAME_NAME}`, provider));
-    // register a command to get the GZDoom binary path
+    // register a command to get the game binary path
     context.subscriptions.push(vscode.commands.registerCommand(`${GAME_NAME}.debug.searchForGamePath`, () => {
-        return gzdoomConfigurationProvider.getGamePath();
+        return GameConfigurationProvider.getGamePath();
     }));
 }
