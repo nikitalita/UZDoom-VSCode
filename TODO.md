@@ -4,7 +4,7 @@ The CI only runs on Windows, so re-focusing after continuing the game only works
 Need to publish per-platform versions of the extension.
 
 ## Publishing
-NOTE: The extension will be published under the identifier "<package.json:publisher>.<package.json:name>". This is currently set to "UZDoom.uzdoom-vscode".
+NOTE: The extension will be published under the identifier "\<package.json:publisher\>.\<package.json:name\>". This is currently set to "UZDoom.uzdoom-vscode".
 - [ ] Create an account on Visual Studio Marketplace (https://marketplace.visualstudio.com/manage/publishers/)
 - [ ] Publish the extension to the Visual Studio Marketplace
 - [ ] Publish the extension to the Open VSX Registry
