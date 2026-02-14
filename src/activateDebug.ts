@@ -189,11 +189,12 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
             pid = debugLauncherService.launcherProcess?.pid || 0;
         }
         if (launched != DebugLaunchState.success) {
+            let errMessage = '';
             if (launched === DebugLaunchState.cancelled) {
                 _session.configuration.noop = true;
                 return noopExecutable;
             }
-            let errMessage = `${GAME_NAME} failed to launch.`;
+            errMessage = debugLauncherService.errorString || `${GAME_NAME} failed to launch.`;
             if (launched === DebugLaunchState.multipleGamesRunning) {
                 errMessage = `Multiple ${GAME_NAME} instances are running, shut them down and try again.`;
             }

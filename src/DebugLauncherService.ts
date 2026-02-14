@@ -1,4 +1,3 @@
-import { window } from 'vscode';
 import { ChildProcess, spawn } from 'node:child_process';
 import waitPort from 'wait-port';
 import findProcess from 'find-process';
@@ -34,21 +33,26 @@ export class DebugLauncherService implements IDebugLauncherService {
     // TODO: Move this stuff into the global Context
     private cancellationToken: CancellationToken | undefined;
     public launcherProcess: ChildProcess | undefined;
-    private gamePID: number | undefined;
+    private _gamePID: number | undefined;
     private gameName: string = '';
     // @ts-ignore
-    private errorString: string = '';
+    private _errorString: string = '';
+
+    public get gamePID(): number | undefined {
+        return this._gamePID;
+    }
+
+    public get errorString(): string {
+        return this._errorString;
+    }
+
     constructor() {
     }
     public reset() {
         this.launcherProcess = undefined;
-        this.gamePID = undefined;
+        this._gamePID = undefined;
         this.gameName = "";
-        this.errorString = '';
-    }
-
-    public getGamePID(): number | undefined {
-        return this.gamePID;
+        this._errorString = '';
     }
 
     async getGameIsRunning(game_name: string) {
@@ -312,7 +316,7 @@ export class DebugLauncherService implements IDebugLauncherService {
             console.error(error);
             _stdErr += error.toString();
             _output += error.toString();
-            this.errorString = error.toString();
+            this._errorString = error.toString();
             gameIsRunning = false;
             errorOccured = true;
         });
@@ -347,14 +351,22 @@ export class DebugLauncherService implements IDebugLauncherService {
         const _handleBad = async () => {
             this.removeProcessListeners();
             if (_processHasExited()) {
-                window.showErrorMessage(
-                    `Launcher process exited with error code ${this.launcherProcess?.exitCode || exitCode || -1
-                    }.\ncmd: ${cmd}\nargs: ${args.join(' ')}\noutput: ${_output}`
-                );
+                const previousErrorString = this._errorString;
+                exitCode = this.launcherProcess?.exitCode || exitCode || -1
+                this._errorString = `Launcher process exited with error code ${exitCode}.`;
+                if (previousErrorString && previousErrorString !== this._errorString) {
+                    this._errorString += `\nReason: ${previousErrorString}`
+                }
+                const errOutput = _stdErr || _output;
+                this._errorString += `\n\ncmd: ${cmd}\n\nargs: ${args.join(' ')}`;
+                if (errOutput) {
+                    this._errorString += `\n\noutput:\n${errOutput}`;
+                }
                 return DebugLaunchState.launcherError;
             }
             if (cancellationToken.isCancellationRequested) {
                 await this.tearDownAfterDebug();
+                this._errorString = '';
                 return DebugLaunchState.cancelled;
             }
             return DebugLaunchState.gameFailedToStart;
@@ -379,7 +391,7 @@ export class DebugLauncherService implements IDebugLauncherService {
         if (gamePIDs.length > 1) {
             return DebugLaunchState.multipleGamesRunning;
         }
-        this.gamePID = gamePIDs[0];
+        this._gamePID = gamePIDs[0];
 
         // game has launched, now we wait for the port to open
         const connectionTimeout = 15000;
