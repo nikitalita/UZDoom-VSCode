@@ -1,6 +1,6 @@
 import path, { FormatInputPathObject } from "path";
 import fs from "fs";
-import { LaunchCommand } from "./adapter-proxy/DebugLauncherService";
+import { LaunchCommand } from "../adapter-proxy/DebugLauncherService";
 
 export const DEFAULT_PORT = 19021;
 

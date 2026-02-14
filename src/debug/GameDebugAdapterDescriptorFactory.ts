@@ -4,10 +4,10 @@
 import * as vscode from 'vscode';
 import { CancellationToken } from 'vscode';
 import { GameDebugAdapterProxy, GameDebugAdapterProxyOptions } from './GameDebugAdapterProxy';
-import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './adapter-proxy/DebugLauncherService';
+import { DebugLauncherService, DebugLaunchState, LaunchCommand } from '../adapter-proxy/DebugLauncherService';
 import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
-import { VSCodeFileAccessor as WorkspaceFileAccessor } from './adapter-proxy/VSCodeInterface';
-import { windowManager } from "./WindowManager";
+import { VSCodeFileAccessor as WorkspaceFileAccessor } from '../adapter-proxy/VSCodeInterface';
+import { windowManager } from "../WindowManager";
 
 const debugLauncherService = new DebugLauncherService();
 const workspaceFileAccessor = new WorkspaceFileAccessor();

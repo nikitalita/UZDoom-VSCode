@@ -21,7 +21,7 @@ const launchJsonDocumentSelector: vscode.DocumentSelector = [{
 }];
 
 
-export function activateDebugSnippetsProvider(context: vscode.ExtensionContext): void {
+export function activateDebugConfigSnippetsProvider(context: vscode.ExtensionContext): void {
     const provider: vscode.CompletionItemProvider = {
         provideCompletionItems(
             document: vscode.TextDocument,

@@ -2,13 +2,13 @@
 /* eslint-disable no-prototype-builtins */
 import { DebugProtocol as DAP, } from '@vscode/debugprotocol';
 import { GAME_LABEL_NAME, GAME_NAME, gzpath as path } from './GameDefs';
-import { DAPLogLevel, DebugAdapterProxy, DebugAdapterProxyOptions } from './adapter-proxy/DebugAdapterProxy';
+import { DAPLogLevel, DebugAdapterProxy, DebugAdapterProxyOptions } from '../adapter-proxy/DebugAdapterProxy';
 import { Response, Message } from '@vscode/debugadapter/lib/messages';
 import * as chalk_d from 'chalk';
-import { FileAccessor, Emitter } from './adapter-proxy/IDEInterface';
+import { FileAccessor, Emitter } from '../adapter-proxy/IDEInterface';
 import { ProjectItem } from './GameDefs';
-import { Window, windowManager } from "./WindowManager"
-import { CaselessMap } from './common/CaselessSets';
+import { Window, windowManager } from "../WindowManager"
+import { CaselessMap } from '../common/CaselessSets';
 
 export enum ErrorDestination {
     User = 1,
