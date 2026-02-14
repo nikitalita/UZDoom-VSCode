@@ -6,7 +6,7 @@ import { CancellationToken } from 'vscode';
 import { registerGameDebugConfigurationProvider } from './GameDebugConfigProvider';
 import { GameDebugAdapterProxy, GameDebugAdapterProxyOptions } from './GameDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './DebugLauncherService';
-import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME } from './GameDefs';
+import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './VSCodeInterface';
 import { WadFileSystemProvider } from './wad-provider/WadFileSystemProvider';
 import { Pk3FSProvider } from './pk3-provider/Pk3FSProvider';
@@ -158,7 +158,7 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
                 if (!options.cwd) {
                     options.cwd = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
                 }
-                launchCommand = debugLauncherService.getLaunchCommand(
+                launchCommand = getGameLaunchCommand(
                     options.gamePath,
                     options.iwad,
                     options.projects.map(p => p.archive),
@@ -204,10 +204,10 @@ class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory 
                 return noopExecutable;
             } else if (options.request === 'attach') {
                 // await this.WarnIfProjectsMissing(options.projects);
-                if ((await debugLauncherService.getGameIsRunning())) {
-                    let pids = await debugLauncherService.getGamePIDs();
+                if ((await debugLauncherService.getGameIsRunning(GAME_NAME))) {
+                    let pids = await debugLauncherService.getGamePIDs(GAME_NAME);
                     pid = pids[0];
-                    let launchCommand = await debugLauncherService.getLaunchCommandFromRunningProcess(options.port);
+                    let launchCommand = await debugLauncherService.getLaunchCommandFromRunningProcess(options.port, GAME_NAME);
                     if (launchCommand) {
                         this.previousCmd.set(_session.id, launchCommand);
                     }

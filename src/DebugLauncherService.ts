@@ -4,7 +4,6 @@ import waitPort from 'wait-port';
 import findProcess from 'find-process';
 import { lsof, ProcessInfo } from 'list-open-files';
 import path from 'path';
-import { GAME_NAME } from './GameDefs';
 
 export enum DebugLaunchState {
     success,
@@ -34,9 +33,8 @@ export class DebugLauncherService implements IDebugLauncherService {
     // TODO: Move this stuff into the global Context
     private cancellationTokenSource: CancellationTokenSource | undefined;
     public launcherProcess: ChildProcess | undefined;
-    // @ts-ignore
     private gamePID: number | undefined;
-    private gameName: string = GAME_NAME;
+    private gameName: string = '';
     // @ts-ignore
     private errorString: string = '';
     constructor() {
@@ -44,11 +42,18 @@ export class DebugLauncherService implements IDebugLauncherService {
     public reset() {
         this.launcherProcess = undefined;
         this.gamePID = undefined;
-        this.gameName = GAME_NAME;
+        this.gameName = "";
         this.errorString = '';
     }
 
-    async getGameIsRunning(game_name: string = this.gameName) {
+    public getGamePID(): number | undefined {
+        return this.gamePID;
+    }
+
+    async getGameIsRunning(game_name: string) {
+        if (!game_name) {
+            return false;
+        }
         // check if we're on windows
 
         if (game_name.toLowerCase().endsWith('.exe')) {
@@ -59,7 +64,10 @@ export class DebugLauncherService implements IDebugLauncherService {
         return processList.length > 0;
     }
 
-    async getGamePIDs(game_name: string = this.gameName): Promise<Array<number>> {
+    async getGamePIDs(game_name: string): Promise<Array<number>> {
+        if (!game_name) {
+            return [];
+        }
         if (game_name.endsWith('.exe')) {
             game_name = game_name.slice(0, -4);
         }
@@ -72,7 +80,10 @@ export class DebugLauncherService implements IDebugLauncherService {
         return gameProcesses.map((p) => p.pid);
     }
 
-    async getLaunchCommandFromRunningProcess(port: number, game_name: string = this.gameName): Promise<LaunchCommand | undefined> {
+    async getLaunchCommandFromRunningProcess(port: number, game_name: string): Promise<LaunchCommand | undefined> {
+        if (!game_name) {
+            return undefined;
+        }
         if (game_name.endsWith('.exe')) {
             game_name = game_name.slice(0, -4);
         }
@@ -150,8 +161,8 @@ export class DebugLauncherService implements IDebugLauncherService {
             }
         }
 
-        if (await this.getGameIsRunning()) {
-                let pids = await this.getGamePIDs();
+        if (this.gameName && await this.getGameIsRunning(this.gameName)) {
+            let pids = await this.getGamePIDs(this.gameName);
             let retris = 0;
             while (pids.length > 0 && retris < 5) {
                 for (let pid of pids) {
@@ -166,7 +177,7 @@ export class DebugLauncherService implements IDebugLauncherService {
                     }
                 }
                 retris++;
-                pids = await this.getGamePIDs();
+                pids = await this.getGamePIDs(this.gameName);
             }
             if (pids.length > 0) {
                 console.error(`Failed to kill game process after 5 retries`);
@@ -261,42 +272,6 @@ export class DebugLauncherService implements IDebugLauncherService {
     }
 
 
-    public getLaunchCommand(
-        gamePath: string,
-        iwad: string,
-        pwads: string[],
-        debugPort: number,
-        map?: string,
-        gameIniPath?: string,
-        gameArgs?: string[],
-        cwd?: string,
-    ): LaunchCommand {
-        let args = [
-            '-iwad',
-            iwad,
-            '-debug',
-            debugPort.toString(),
-        ];
-        for (const pwad of pwads) {
-            args.push('-file', pwad);
-        }
-        if (gameIniPath) {
-            args.push('-config', gameIniPath);
-        }
-        if (map) {
-            args.push('+map', map);
-        }
-        if (gameArgs) {
-            args.push(...gameArgs);
-        }
-        return {
-            command: gamePath,
-            args: args,
-            cwd: cwd,
-        };
-    }
-
-
     async runLauncher(
         launcherCommand: LaunchCommand,
         portToCheck: number,
@@ -310,7 +285,7 @@ export class DebugLauncherService implements IDebugLauncherService {
         const cmd = launcherCommand.command;
         // get the file name from the command
         this.gameName = path.basename(cmd);
-        if (this.gameName.endsWith('.exe')) {
+        if (this.gameName.toLowerCase().endsWith('.exe')) {
             this.gameName = this.gameName.slice(0, -4);
         }
         const args = launcherCommand.args;
@@ -393,7 +368,7 @@ export class DebugLauncherService implements IDebugLauncherService {
         }
         // we can't get the PID of the game from the launcher process because
         // both MO2 and the script extender loaders fork and deatch the game process
-        const gamePIDs = await this.getGamePIDs();
+        const gamePIDs = await this.getGamePIDs(this.gameName);
         if (gamePIDs.length === 0) {
             return await _handleBad();
         }
@@ -409,7 +384,7 @@ export class DebugLauncherService implements IDebugLauncherService {
             if (cancellationToken.isCancellationRequested) {
                 return false;
             }
-            gameIsRunning = await this.getGameIsRunning();
+            gameIsRunning = await this.getGameIsRunning(this.gameName);
             return gameIsRunning;
         });
         if (!gameIsRunning || _checkBad()) {

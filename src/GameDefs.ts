@@ -1,7 +1,8 @@
 import path, { FormatInputPathObject } from "path";
 import fs from "fs";
-export const DEFAULT_PORT = 19021;
+import { LaunchCommand } from "./DebugLauncherService";
 
+export const DEFAULT_PORT = 19021;
 
 const GAME_SEARCH_PATHS = {
     "win32": [
@@ -80,6 +81,41 @@ export function searchForGameBinary(): string | null {
         }
     }
     return null;
+}
+
+export function getLaunchCommand(
+    gamePath: string,
+    iwad: string,
+    pwads: string[],
+    debugPort: number,
+    map?: string,
+    gameIniPath?: string,
+    gameArgs?: string[],
+    cwd?: string,
+): LaunchCommand {
+    let args = [
+        '-iwad',
+        iwad,
+        '-debug',
+        debugPort.toString(),
+    ];
+    for (const pwad of pwads) {
+        args.push('-file', pwad);
+    }
+    if (gameIniPath) {
+        args.push('-config', gameIniPath);
+    }
+    if (map) {
+        args.push('+map', map);
+    }
+    if (gameArgs) {
+        args.push(...gameArgs);
+    }
+    return {
+        command: gamePath,
+        args: args,
+        cwd: cwd,
+    };
 }
 
 class gzpath_wrapper implements path.PlatformPath {
