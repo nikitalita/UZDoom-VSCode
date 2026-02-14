@@ -1,5 +1,5 @@
 {
-    "name": "uzdoom-zscript",
+    "name": "uzdoom-vscode",
     "displayName": "UZDoom ZScript",
     "description": "UZDoom's multiple scripting languages support (with a focus on ZScript) for VSCode (and compatible editors)",
     "publisher": "kaptainmicila",

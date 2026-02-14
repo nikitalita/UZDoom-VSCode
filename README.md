@@ -1,5 +1,5 @@
 <p align="center"><img width="256" height="256" src="./icons/UZDoom.png" alt="UZDoom logo" style="min-width: 128px; max-width: 128px; min-height: 128px; max-height: 128px;"></p>
-<h1 align="center">ZScript-VSCode</h1>
+<h1 align="center">UZDoom-VSCode</h1>
 
 <p align="center">
 <img src="https://img.shields.io/github/stars/KaptainMicila/ZScript-VSCode?style=for-the-badge">
@@ -51,11 +51,11 @@ Just do the same thing for earlier versions
 
 OR:
 
-Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=kaptainmicila.uzdoom-zscript)
+Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=kaptainmicila.uzdoom-vscode)
 
 OR:
 
-Get it from [Open VSX Registry](https://open-vsx.org/extension/kaptainmicila/uzdoom-zscript)
+Get it from [Open VSX Registry](https://open-vsx.org/extension/kaptainmicila/uzdoom-vscode)
 
 ---
 
