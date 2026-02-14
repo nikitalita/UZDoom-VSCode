@@ -4,6 +4,9 @@ import * as vscode from 'vscode';
 import { activateGameDebug } from './activateDebug';
 import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
 import { activateDebugSnippetsProvider } from './snippetsProvider';
+import { registerGameDebugConfigurationProvider } from './GameDebugConfigProvider';
+import { activate as activateWadProvider } from './wad-provider/index';
+import { activate as activatePk3Provider } from './pk3-provider/index';
 
 /*
  * The compile time flag 'runMode' controls how the debug adapter is run.
@@ -11,6 +14,9 @@ import { activateDebugSnippetsProvider } from './snippetsProvider';
  */
 
 export function activate(context: vscode.ExtensionContext) {
+    registerGameDebugConfigurationProvider(context);
+    activateWadProvider(context);
+    activatePk3Provider(context);
 	activateDehackedFoldingProvider(context);
     activateDebugSnippetsProvider(context);
     activateGameDebug(context);

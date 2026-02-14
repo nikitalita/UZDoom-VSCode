@@ -3,30 +3,19 @@
 
 import * as vscode from 'vscode';
 import { CancellationToken } from 'vscode';
-import { registerGameDebugConfigurationProvider } from './GameDebugConfigProvider';
 import { GameDebugAdapterProxy, GameDebugAdapterProxyOptions } from './GameDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './adapter-proxy/DebugLauncherService';
 import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './adapter-proxy/VSCodeInterface';
-import { WadFileSystemProvider } from './wad-provider/WadFileSystemProvider';
-import { Pk3FSProvider } from './pk3-provider/Pk3FSProvider';
-import { activate as activatePk3Provider } from './pk3-provider/index';
-import { activate as activateWadProvider } from './wad-provider/index';
 import { windowManager } from "./WindowManager";
 
 const debugLauncherService = new DebugLauncherService();
 const workspaceFileAccessor = new WorkspaceFileAccessor();
-let wadFileSystemProvider: WadFileSystemProvider | null = null;
-let pk3FileSystemProvider: Pk3FSProvider | null = null;
 
 export function activateGameDebug(context: vscode.ExtensionContext) {
-    // register a configuration provider for game debug type
-    registerGameDebugConfigurationProvider(context);
     const factory = new InlineDebugAdapterFactory();
 
     // register a dynamic configuration provider for game debug type
-    wadFileSystemProvider = activateWadProvider(context);
-    pk3FileSystemProvider = activatePk3Provider(context);
     if (!factory) {
         throw new Error('No debug adapter factory');
     }
