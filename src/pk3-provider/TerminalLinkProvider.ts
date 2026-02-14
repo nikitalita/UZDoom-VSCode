@@ -69,7 +69,7 @@ export function registerTerminalLinkProvider() {
       }
 
       await vscode.window.showTextDocument(
-        vscode.Uri.parse(`zip:${link.data.substring(0, matchIndex).replace(/^\/?/, `/`)}`),
+          vscode.Uri.parse(`pk3:${link.data.substring(0, matchIndex).replace(/^\/?/, `/`)}`),
         {
           selection,
         },
