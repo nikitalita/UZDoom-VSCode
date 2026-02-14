@@ -1,9 +1,10 @@
-import { CancellationToken, CancellationTokenSource, window } from 'vscode';
+import { window } from 'vscode';
 import { ChildProcess, spawn } from 'node:child_process';
 import waitPort from 'wait-port';
 import findProcess from 'find-process';
 import { lsof, ProcessInfo } from 'list-open-files';
 import path from 'path';
+import { CancellationToken, DummyCancellationToken } from './IDEInterface';
 
 export enum DebugLaunchState {
     success,
@@ -31,7 +32,7 @@ export interface LaunchCommand {
 export class DebugLauncherService implements IDebugLauncherService {
 
     // TODO: Move this stuff into the global Context
-    private cancellationTokenSource: CancellationTokenSource | undefined;
+    private cancellationToken: CancellationToken | undefined;
     public launcherProcess: ChildProcess | undefined;
     private gamePID: number | undefined;
     private gameName: string = '';
@@ -200,8 +201,11 @@ export class DebugLauncherService implements IDebugLauncherService {
     }
 
     async cancelLaunch() {
-        if (this.cancellationTokenSource) {
-            this.cancellationTokenSource.cancel();
+        if (this.cancellationToken) {
+            this.cancellationToken.isCancellationRequested = true;
+            if (this.cancellationToken instanceof DummyCancellationToken) {
+                this.cancellationToken.cancel();
+            }
         }
     }
 
@@ -279,9 +283,9 @@ export class DebugLauncherService implements IDebugLauncherService {
     ): Promise<DebugLaunchState> {
         await this.tearDownAfterDebug();
         if (!cancellationToken) {
-            this.cancellationTokenSource = new CancellationTokenSource();
-            cancellationToken = this.cancellationTokenSource.token;
+            cancellationToken = new DummyCancellationToken();
         }
+        this.cancellationToken = cancellationToken;
         const cmd = launcherCommand.command;
         // get the file name from the command
         this.gameName = path.basename(cmd);

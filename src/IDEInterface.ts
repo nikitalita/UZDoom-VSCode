@@ -243,3 +243,35 @@ export class Emitter<T> implements EventEmitter<T> {
         this._once_thises = [];
     }
 }
+
+/**
+ * A cancellation token is passed to an asynchronous or long running
+ * operation to request cancellation, like cancelling a request
+ * for completion items because the user continued to type.
+ *
+ * To get an instance of a `CancellationToken` use a
+ * {@link CancellationTokenSource}.
+ */
+export interface CancellationToken {
+
+    /**
+     * Is `true` when the token has been cancelled, `false` otherwise.
+     */
+    isCancellationRequested: boolean;
+
+    /**
+     * An {@link Event} which fires upon cancellation.
+     */
+    onCancellationRequested: Event<any>;
+}
+
+export class DummyCancellationToken implements CancellationToken {
+    isCancellationRequested: boolean = false;
+    private _emitter = new Emitter<any>();
+    onCancellationRequested: Event<any> = this._emitter.event;
+
+    public cancel(e?: any) {
+        this.isCancellationRequested = true;
+        this._emitter.fire(e);
+    }
+}
