@@ -26,10 +26,11 @@ export class WadFileSystemProvider implements FileSystemProvider {
         // find the last instance of ".wad"
         let wadpos = -1;
         let ext = '';
-        for (ext of EXTENSIONS) {
-            wadpos = uriString.toLowerCase().lastIndexOf(ext);
-            if (wadpos !== -1) {
-                break;
+        for (let _ext of EXTENSIONS) {
+            const pos = uriString.toLowerCase().lastIndexOf(_ext);
+            if (pos != -1 && pos > wadpos) {
+                wadpos = pos;
+                ext = _ext;
             }
         }
         if (wadpos === -1) {
@@ -121,7 +122,7 @@ export class WadFileSystemProvider implements FileSystemProvider {
             wad.lumps.push(entry);
         }
 
-        entry.content = content;
+        entry.content = content.buffer as ArrayBuffer;
         await fs.writeFile(wadPath, Buffer.from(wad.save()));
     }
 
