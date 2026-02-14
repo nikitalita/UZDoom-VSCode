@@ -15,6 +15,9 @@ Made with the help from:
 ## FEATURES
 
 - Syntax highlighting for many languages needed for UZDoom modding
+- ZScript Debugging support
+- WAD mounting
+- PK3 mounting
 
 ---
 
@@ -22,7 +25,7 @@ Made with the help from:
 
 archvile.zs (from uzdoom.pk3)
 
-![archvile.zs](https://raw.githubusercontent.com/UZDoom/UZDoom-VSCode/master/icons/CodeScreenshot.png)
+![archvile.zs](https://raw.githubusercontent.com/nikitalita/UZDoom-VSCode/refs/heads/master/icons/CodeScreenshot.png)
 
 ---
 
@@ -56,22 +59,13 @@ Get it from [Open VSX Registry](https://open-vsx.org/extension/UZDoom/uzdoom-vsc
 
 ## CONTRIBUTING
 
-Just clone the repo.
-
-This extension doesn't even use Node.js features, so you don't even
-need to `npm install` this.
-
-> Please contribute only regex rules / language configurations or
-> anything that isn't related to programmatic features.
->
-> Those are better put in a separate extension, and I would be grateful
-> if you took merit for your own things instead of giving such
-> responsibility to me.
+Just clone the repo and run `npm install`.
 
 ---
 
 ## SPECIAL THANKS
 
+- [KaptainMicila](https://github.com/KaptainMicila) for creating the original extension
 - [Nash Muhandes](https://github.com/nashmuhandes) for giving me the will to make this syntax highlighter;
 - [marrub--](https://github.com/marrub--) for the ZScript documentation;
 - [Microsoft](https://www.microsoft.com) for making VSCode;
