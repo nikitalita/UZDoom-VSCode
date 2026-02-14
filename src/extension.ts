@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import { activateDebugAdapterDescriptorFactory } from './debug/GameDebugAdapterDescriptorFactory';
-import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
+import { activateDehackedFoldingProvider } from './language/dehackedFoldingProvider';
 import { activateDebugConfigSnippetsProvider } from './debug/DebugConfigSnippetsProvider';
 import { registerGameDebugConfigurationProvider } from './debug/GameDebugConfigProvider';
 import { activate as activateWadProvider } from './wad-provider/index';
