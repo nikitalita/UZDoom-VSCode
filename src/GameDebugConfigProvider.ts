@@ -2,7 +2,7 @@ import { DEFAULT_PORT, GAME_LABEL_NAME, GAME_NAME, isBuiltinPK3File, ProjectItem
 import * as vscode from 'vscode';
 import path from "path";
 import { WorkspaceFolder, DebugConfiguration, ProviderResult, CancellationToken } from 'vscode';
-import { VSCodeFileAccessor as WorkspaceFileAccessor } from './VSCodeInterface';
+import { VSCodeFileAccessor as WorkspaceFileAccessor } from './adapter-proxy/VSCodeInterface';
 
 const workspaceFileAccessor = new WorkspaceFileAccessor();
 

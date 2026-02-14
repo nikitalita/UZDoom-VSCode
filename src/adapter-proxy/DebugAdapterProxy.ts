@@ -12,7 +12,7 @@ import * as pino_pretty from 'pino-pretty';
 import * as chalk_d from 'chalk';
 import { Event as DAPEvent, Response } from '@vscode/debugadapter/lib/messages'; // avoid pulling in the whole debugadapter
 import * as url from 'url';
-import { default as colorizer } from './colorizer';
+import { default as colorizer } from '../colorizer';
 import { ChildProcess } from 'child_process';
 import { DestinationStream, BaseLogger } from 'pino';
 import { Disposable, Emitter, Event } from './IDEInterface';

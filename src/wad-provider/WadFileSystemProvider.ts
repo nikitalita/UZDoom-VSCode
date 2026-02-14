@@ -1,4 +1,4 @@
-import { Emitter } from "../IDEInterface"
+import { Emitter } from "../adapter-proxy/IDEInterface"
 import { FileSystemProvider, FileStat, FileType, Event, FileChangeEvent, Disposable, Uri } from 'vscode';
 import Wad from "../doom-wad/Wad";
 import * as fs from 'fs/promises';
