@@ -63,6 +63,15 @@ jobs:
         $vsix = Get-ChildItem -Filter "uzdoom-vscode-*.vsix" | Select-Object -First 1
         echo "path=$($vsix.FullName)" >> $env:GITHUB_OUTPUT
 
+    # TODO: Create an account on Visual Studio Marketplace and add the token to the repository secrets.
+    # https://marketplace.visualstudio.com/manage/publishers/
+    # - name: Publish VSIX
+    #   if: startsWith(github.ref, 'refs/tags/v')
+    #   run: npm run publish
+    #   shell: pwsh
+    #   env:
+    #       VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
+
     - name: Upload VSIX
       uses: actions/upload-artifact@v4
       with:
