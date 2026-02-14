@@ -2,7 +2,7 @@
     "name": "uzdoom-vscode",
     "displayName": "UZDoom ZScript",
     "description": "UZDoom's multiple scripting languages support (with a focus on ZScript) for VSCode (and compatible editors)",
-    "publisher": "kaptainmicila",
+    "publisher": "UZDoom Team",
     "icon": "icons/UZDoom.png",
     "version": "1.10.0-beta.2",
     "scripts": {
@@ -64,7 +64,7 @@
     "browser": "./dist/web-extension.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/KaptainMicila/ZScript-VSCode.git"
+        "url": "https://github.com/UZDoom/UZDoom-VSCode.git"
     },
     "engines": {
         "vscode": "^1.52.0"
@@ -1128,15 +1128,15 @@
         }
     },
     "author": {
-        "name": "Micila \"Kaptain\" Micillotto",
-        "email": "micillotto+zdoomsupport@gmail.com",
-        "url": "https://kaptainmicila.itch.io/"
+        "name": "UZDoom Team",
+        "email": "uzdoom@gmail.com",
+        "url": "https://github.com/UZDoom"
     },
     "bugs": {
-        "url": "https://github.com/KaptainMicila/ZScript-VSCode/issues",
-        "email": "micillotto+zdoomsupport@gmail.com"
+        "url": "https://github.com/UZDoom/UZDoom-VSCode/issues",
+        "email": "uzdoom@gmail.com"
     },
-    "homepage": "https://github.com/KaptainMicila/ZScript-VSCode",
+    "homepage": "https://github.com/UZDoom/UZDoom-VSCode",
     "license": "MIT",
     "keywords": [
         "zscript",

@@ -1,11 +1,6 @@
 <p align="center"><img width="256" height="256" src="./icons/UZDoom.png" alt="UZDoom logo" style="min-width: 128px; max-width: 128px; min-height: 128px; max-height: 128px;"></p>
 <h1 align="center">UZDoom-VSCode</h1>
 
-<p align="center">
-<img src="https://img.shields.io/github/stars/KaptainMicila/ZScript-VSCode?style=for-the-badge">
-<img src="https://img.shields.io/badge/%20%F0%9F%8D%95%20DONATE%20PIZZA-4%20%E2%82%AC-important?style=for-the-badge&link=https://www.buymeacoffee.com/KaptainMicila">
-</p>
-
 ---
 
 ## [UZDoom's](https://zdoom.org/index) [ZScript](https://zdoom.org/wiki/ZScript) language support for [VSCode](https://code.visualstudio.com/) (and compatible editors).
@@ -27,7 +22,7 @@ Made with the help from:
 
 archvile.zs (from uzdoom.pk3)
 
-![archvile.zs](https://raw.githubusercontent.com/KaptainMicila/ZScript-VSCode/master/icons/CodeScreenshot.png)
+![archvile.zs](https://raw.githubusercontent.com/UZDoom/UZDoom-VSCode/master/icons/CodeScreenshot.png)
 
 ---
 
@@ -40,7 +35,7 @@ archvile.zs (from uzdoom.pk3)
 
 ### FOR VERSIONS >= 0.9.0
 
-- Get the .vsix from the ["Releases" page](https://github.com/KaptainMicila/ZScript-VSCode/releases)
+- Get the .vsix from the ["Releases" page](https://github.com/UZDoom/UZDoom-VSCode/releases)
 - Open VSCode
 - Press "Ctrl + Shift + p"
 - Type "Extension: install from VSIX"
@@ -51,11 +46,11 @@ Just do the same thing for earlier versions
 
 OR:
 
-Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=kaptainmicila.uzdoom-vscode)
+Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=uzdoom.uzdoom-vscode)
 
 OR:
 
-Get it from [Open VSX Registry](https://open-vsx.org/extension/kaptainmicila/uzdoom-vscode)
+Get it from [Open VSX Registry](https://open-vsx.org/extension/uzdoom/uzdoom-vscode)
 
 ---
 
