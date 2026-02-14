@@ -152,34 +152,27 @@ export abstract class FileAccessor implements FileAccessorBase {
     constructor() { }
 }
 
-interface IDisposable {
+export interface Disposable {
     dispose(): void;
 }
 
-export class Disposable0 implements IDisposable {
-    dispose(): any { }
-}
-
-export interface Event0<T> {
-    (listener: (e: T) => any, thisArg?: any): Disposable0;
-}
 
 
 export class Emitter<T> implements EventEmitter<T> {
-    private _events: Event0<T>[] = [];
+    private _events: Event<T>[] = [];
     private _listeners: ((e: T) => void)[] = [];
     private _thises: any[] = [];
     private _once_listeners: ((e: T) => void)[] = [];
     private _once_thises: any[] = [];
 
-    get event(): Event0<T> {
+    get event(): Event<T> {
         const new_event = (listener: (e: T) => any, thisArg?: any) => {
             this._listeners.push(listener);
             if (thisArg !== undefined) {
                 this._thises.push(thisArg);
             }
 
-            const result: IDisposable = {
+            const result: Disposable = {
                 dispose: () => {
                     // this._listener = undefined;
                     this._listeners = this._listeners.filter(l => l !== listener);
@@ -194,15 +187,15 @@ export class Emitter<T> implements EventEmitter<T> {
 
         return new_event;
     }
-    
-    get once(): Event0<T> {
+
+    get once(): Event<T> {
         const new_event = (listener: (e: T) => any, thisArg?: any) => {
             this._once_listeners.push(listener);
             if (thisArg !== undefined) {
                 this._once_thises.push(thisArg);
             }
 
-            const result: IDisposable = {
+            const result: Disposable = {
                 dispose: () => {
                     // this._listener = undefined;
                     this._once_listeners = this._once_listeners.filter(l => l !== listener);

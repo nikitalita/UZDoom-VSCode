@@ -10,12 +10,12 @@ import * as path from 'path';
 import { pino } from 'pino';
 import * as pino_pretty from 'pino-pretty';
 import * as chalk_d from 'chalk';
-import { Event, Response } from '@vscode/debugadapter/lib/messages'; // avoid pulling in the whole debugadapter
+import { Event as DAPEvent, Response } from '@vscode/debugadapter/lib/messages'; // avoid pulling in the whole debugadapter
 import * as url from 'url';
 import { default as colorizer } from './colorizer';
 import { ChildProcess } from 'child_process';
 import { DestinationStream, BaseLogger } from 'pino';
-import { Disposable0, Emitter, Event0 } from './IDEInterface';
+import { Disposable, Emitter, Event } from './IDEInterface';
 // import { DebugConfiguration } from 'vscode';
 export interface DebugConfiguration {
     /**
@@ -45,8 +45,8 @@ export interface DebugProtocolMessage { }
 /**
  * A structurally equivalent copy of vscode.DebugAdapter
  */
-export interface VSCodeDebugAdapter extends Disposable0 {
-    readonly onDidSendMessage: Event0<DebugProtocolMessage>;
+export interface VSCodeDebugAdapter extends Disposable {
+    readonly onDidSendMessage: Event<DebugProtocolMessage>;
 
     handleMessage(message: DAP.ProtocolMessage): void;
 }
@@ -443,11 +443,11 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
     }
 
     // These aren't listened to when we're running inline
-    get onError(): Event0<Error> {
+    get onError(): Event<Error> {
         return this._onError.event;
     }
 
-    get onExit(): Event0<number | null> {
+    get onExit(): Event<number | null> {
         return this._onExit.event;
     }
 
@@ -519,7 +519,7 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
             clearTimeout(this.connectionTimeout);
         }
 
-        this.sendMessageToClient(new Event('terminated'));
+        this.sendMessageToClient(new DAPEvent('terminated'));
         // remove the listener from the socket
         this._socket?.removeAllListeners();
         this._socket?.destroy();
@@ -527,7 +527,7 @@ export abstract class DebugAdapterProxy implements VSCodeDebugAdapter {
     }
 
     protected emitOutputEvent(message: string, category: string = 'console') {
-        const event = <DAP.OutputEvent>new Event('output');
+        const event = <DAP.OutputEvent>new DAPEvent('output');
         event.body = {
             category: category,
             output: message,
