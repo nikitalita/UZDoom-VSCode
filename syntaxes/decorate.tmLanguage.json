@@ -63,7 +63,7 @@
         },
         {
             "name": "keyword.control.directive.decorate",
-            "match": "^\\#(?:include|library|define)\\b"
+            "match": "^\\s*\\#(?:[iI][nN][cC][Ll][uU][dD][eE]|[lL][iI][bB][rR][aA][rR][yY]|[dD][eE][fF][iI][nN][eE])\\b"
         },
         {
             "name": "variable.other.decorate",
