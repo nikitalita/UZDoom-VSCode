@@ -158,7 +158,9 @@
                     "DECORATE",
                     "decorate",
                     "DECORATE.txt",
-                    "decorate.txt"
+                    "decorate.txt",
+                    "DECOHACK",
+                    "DECOHACK.txt"
                 ],
                 "configuration": "./configurations/DecorateConfiguration.json"
             },
