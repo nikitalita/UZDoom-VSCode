@@ -46,11 +46,11 @@ Just do the same thing for earlier versions
 
 OR:
 
-Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=uzdoom.uzdoom-vscode)
+Get it from [Visual Studio's Marketplace](https://marketplace.visualstudio.com/items?itemName=UZDoom.uzdoom-vscode)
 
 OR:
 
-Get it from [Open VSX Registry](https://open-vsx.org/extension/uzdoom/uzdoom-vscode)
+Get it from [Open VSX Registry](https://open-vsx.org/extension/UZDoom/uzdoom-vscode)
 
 ---
 
