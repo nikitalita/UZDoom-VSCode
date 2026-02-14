@@ -7,6 +7,10 @@ import { readFileSync } from "fs";
 import * as path from "path";
 
 const EXTENSIONS = ['.wad', '.iwad'];
+
+/**
+ * A read-only file system provider for WAD files.
+ */
 export class WadFileSystemProvider implements FileSystemProvider {
     onDidChangeFile: Event<FileChangeEvent[]> = new Emitter<FileChangeEvent[]>().event;
 
@@ -105,6 +109,8 @@ export class WadFileSystemProvider implements FileSystemProvider {
         const entry = await this.getEntry(uri);
         return new Uint8Array(entry.content);
     }
+
+    // The below methods won't be called in read-only mode
 
     async writeFile(uri: Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): Promise<void> {
         const { wadPath, entryPath } = this.parseWadUri(uri);

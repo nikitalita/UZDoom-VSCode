@@ -14,11 +14,17 @@ import { activate as activatePk3Provider } from './pk3-provider/index';
  */
 
 export function activate(context: vscode.ExtensionContext) {
-    registerGameDebugConfigurationProvider(context);
+    // Read-only WAD mounter
     activateWadProvider(context);
+    // PK3 mounter
     activatePk3Provider(context);
+    // Dehacked folding provider
 	activateDehackedFoldingProvider(context);
+    // Game debug configuration provider
+    registerGameDebugConfigurationProvider(context);
+    // Debug config snippets provider
     activateDebugConfigSnippetsProvider(context);
+    // Debug adapter descriptor factory
     activateDebugAdapterDescriptorFactory(context);
 }
 
