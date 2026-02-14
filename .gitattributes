@@ -1,2 +1,15 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# ts
+*.ts text=lf
+*.tsx text=lf
+*.js text=lf
+*.jsx text=lf
+*.json text=lf
+*.css text=lf
+*.html text=lf
+*.md text=lf
+*.yml text=lf
+*.yaml text=lf
+*.toml text=lf
