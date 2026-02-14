@@ -4,7 +4,7 @@
     "description": "UZDoom's multiple scripting languages support (with a focus on ZScript) for VSCode (and compatible editors)",
     "publisher": "UZDoom Team",
     "icon": "icons/UZDoom.png",
-    "version": "1.10.0-beta.2",
+    "version": "2.0.0",
     "scripts": {
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts",
