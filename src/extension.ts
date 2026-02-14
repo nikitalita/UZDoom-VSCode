@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { activateGameDebug } from './activateDebug';
+import { activateDebugAdapterDescriptorFactory } from './GameDebugAdapterDescriptorFactory';
 import { activateDehackedFoldingProvider } from './dehackedFoldingProvider';
 import { activateDebugSnippetsProvider } from './snippetsProvider';
 import { registerGameDebugConfigurationProvider } from './GameDebugConfigProvider';
@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
     activatePk3Provider(context);
 	activateDehackedFoldingProvider(context);
     activateDebugSnippetsProvider(context);
-    activateGameDebug(context);
+    activateDebugAdapterDescriptorFactory(context);
 }
 
 export function deactivate() {

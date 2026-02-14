@@ -5,15 +5,15 @@ import * as vscode from 'vscode';
 import { CancellationToken } from 'vscode';
 import { GameDebugAdapterProxy, GameDebugAdapterProxyOptions } from './GameDebugAdapterProxy';
 import { DebugLauncherService, DebugLaunchState, LaunchCommand } from './adapter-proxy/DebugLauncherService';
-import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, gzpath as path, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
+import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from './adapter-proxy/VSCodeInterface';
 import { windowManager } from "./WindowManager";
 
 const debugLauncherService = new DebugLauncherService();
 const workspaceFileAccessor = new WorkspaceFileAccessor();
 
-export function activateGameDebug(context: vscode.ExtensionContext) {
-    const factory = new InlineDebugAdapterFactory();
+export function activateDebugAdapterDescriptorFactory(context: vscode.ExtensionContext) {
+    const factory = new GameInlineDebugAdapterFactory();
 
     // register a dynamic configuration provider for game debug type
     if (!factory) {
@@ -66,7 +66,7 @@ function cancellableWindow(title: string, timeout: number, timeoutMessage?: stri
 
 const noopExecutable = new vscode.DebugAdapterExecutable('node', ['-e', '""']);
 
-class InlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory {
+class GameInlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFactory {
     // map of session id to previous command
     private previousCmd: Map<string, LaunchCommand> = new Map();
 
