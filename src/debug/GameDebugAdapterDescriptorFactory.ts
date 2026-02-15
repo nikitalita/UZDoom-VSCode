@@ -8,6 +8,7 @@ import { DebugLauncherService, DebugLaunchState, LaunchCommand } from '../adapte
 import { DEFAULT_PORT, isBuiltinPK3File, ProjectItem, GAME_NAME, getLaunchCommand as getGameLaunchCommand } from './GameDefs';
 import { VSCodeFileAccessor as WorkspaceFileAccessor } from '../adapter-proxy/VSCodeInterface';
 import { windowManager } from "../WindowManager";
+import { GameVersionChecker } from './GameVersionChecker';
 
 const debugLauncherService = new DebugLauncherService();
 const workspaceFileAccessor = new WorkspaceFileAccessor();
@@ -165,6 +166,15 @@ class GameInlineDebugAdapterFactory implements vscode.DebugAdapterDescriptorFact
         }
         let shouldLaunch = options.request === 'launch' || reattach;
         if (shouldLaunch) {
+            const gameVersion = GameVersionChecker.getGameVersion(options.gamePath);
+            if (!gameVersion || !GameVersionChecker.versionSupportsDebugger(gameVersion)) {
+                const errorMessage = gameVersion ?
+                    `${GAME_NAME} version ${GameVersionChecker.toString(gameVersion)} does not support debugging. Please grab the latest nightly build from https://devbuilds.drdteam.org/uzdoom/.` :
+                    `Could not determine ${GAME_NAME} version.`;
+                vscode.window.showErrorMessage(errorMessage);
+                _session.configuration.noop = true;
+                return noopExecutable;
+            }
             await this.resolveProjects(options.projects);
             const cancellationSource = new vscode.CancellationTokenSource();
             const cancellationToken = cancellationSource.token;
